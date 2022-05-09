@@ -45,6 +45,7 @@ const ImagesPage: FC = (): ReactElement => {
 			>
 				{images.map((image, index) => (
 					<AppImage
+						// @ts-ignore
 						ref={imagesRefs.current[index]}
 						image={image}
 						onDelete={filterImage}

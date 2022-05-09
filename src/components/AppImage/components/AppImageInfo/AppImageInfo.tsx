@@ -37,6 +37,8 @@ type AppImageInfoProps = ImageInfo & {
 	name: string;
 };
 
+type InfoItem = { name: string; value: string | number };
+
 const AppImageInfo: FC<AppImageInfoProps> = ({
 	width,
 	height,
@@ -55,7 +57,7 @@ const AppImageInfo: FC<AppImageInfoProps> = ({
 		{ name: 'Кол-во пикселей', value: width * height },
 		typeof binarizedTime !== 'undefined' && {
 			name: 'Время бинаризации',
-			value: binarizedTime,
+			value: `${binarizedTime} сек.`,
 		},
 	].filter(Boolean);
 
@@ -65,7 +67,7 @@ const AppImageInfo: FC<AppImageInfoProps> = ({
 				sx={{ borderRadius: '0', width: '100%', transition: 'all .2s ease' }}
 			>
 				<List>
-					{info.map(({ name, value }, index) => {
+					{(info as InfoItem[]).map(({ name, value }, index) => {
 						const isLast = info.length - 1 === index;
 
 						return (

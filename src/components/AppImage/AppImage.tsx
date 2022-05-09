@@ -25,6 +25,7 @@ export type ImageInfo = {
 
 export type AppImageRefMethods = {
 	binarize: () => Promise<any>;
+	imageInfo: ImageInfo;
 };
 
 const AppImage = forwardRef<AppImageRefMethods, AppImageProps>(
@@ -44,6 +45,7 @@ const AppImage = forwardRef<AppImageRefMethods, AppImageProps>(
 		useImperativeHandle(
 			ref,
 			(): AppImageRefMethods => ({
+				imageInfo,
 				binarize: async () => {
 					setBinarizeMode(true, () => {
 						const timeStart = Date.now();
