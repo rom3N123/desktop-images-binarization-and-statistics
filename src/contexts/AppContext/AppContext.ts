@@ -1,4 +1,5 @@
-import { createContext, MutableRefObject } from 'react';
+import { createContext, MutableRefObject, RefObject } from 'react';
+import { AppImageRefMethods } from '../../components/AppImage/AppImage';
 import { ArrayRef } from '../../hooks/useArrayRefs/useArrayRefs';
 
 export type Image = {
@@ -11,7 +12,7 @@ export type AppContextValue = {
 	setImages: React.Dispatch<React.SetStateAction<Image[]>>;
 	isBinarizing: boolean;
 	setIsBinarizing: React.Dispatch<React.SetStateAction<boolean>>;
-	imagesRefs: MutableRefObject<ArrayRef>;
+	imagesRefs: MutableRefObject<ArrayRef<AppImageRefMethods>>;
 	startBinarize: () => void;
 };
 

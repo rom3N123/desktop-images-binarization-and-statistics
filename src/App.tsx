@@ -1,8 +1,9 @@
-import { Paper } from '@mui/material';
+import Paper from '@mui/material/Paper';
 import { Route, Routes } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import ImagesPage from './pages/ImagesPage';
 import MainPage from './pages/MainPage';
+import TablePage from './pages/TablePage';
 
 function App() {
 	return (
@@ -23,6 +24,8 @@ function App() {
 				<Route index element={<MainPage />} />
 
 				<Route path='/images' element={<ImagesPage />} />
+
+				<Route path='/table' element={<TablePage />} />
 			</Routes>
 		</Paper>
 	);

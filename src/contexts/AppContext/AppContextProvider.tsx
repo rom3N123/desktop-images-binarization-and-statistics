@@ -1,6 +1,7 @@
 import React, { FC, ReactElement, ReactNode, useState } from 'react';
 import { AppImageRefMethods } from '../../components/AppImage/AppImage';
 import useArrayRefs from '../../hooks/useArrayRefs';
+import appStore from '../../stores/appStore';
 import { Context, AppContextValue, Image } from './AppContext';
 
 const AppContextProvider: FC<{ children: ReactNode }> = ({
@@ -18,6 +19,12 @@ const AppContextProvider: FC<{ children: ReactNode }> = ({
 		}
 
 		setIsBinarizing(false);
+
+		setTimeout(() => {
+			const imagesInfos = imagesRefs.current.map(ref => ref.current!.imageInfo);
+
+			appStore.setImagesInfos(imagesInfos);
+		}, 0);
 	};
 
 	const value: AppContextValue = {

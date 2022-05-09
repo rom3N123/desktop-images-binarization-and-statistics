@@ -5,7 +5,7 @@ type Callback = (...args: any[]) => any;
 
 type useStateWithCallbackReturn<T> = [
 	state: T,
-	updateState: (state: SetStateAction<T>, cb: Callback) => void
+	updateState: (state: SetStateAction<T>, cb?: Callback) => void
 ];
 
 const useStateWithCallback = <T>(
@@ -15,7 +15,7 @@ const useStateWithCallback = <T>(
 
 	const cbRef = useRef<Callback>();
 
-	const updateState = (newState: NewState<T>, cb: Callback) => {
+	const updateState = (newState: NewState<T>, cb?: Callback) => {
 		setState(prev =>
 			// @ts-ignore
 			typeof newState === 'function' ? newState(prev) : newState

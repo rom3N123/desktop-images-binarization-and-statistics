@@ -18,6 +18,7 @@ type AppImageProps = {
 };
 
 export type ImageInfo = {
+	name: string;
 	width: number;
 	height: number;
 	binarizedTime?: number;
@@ -35,6 +36,7 @@ const AppImage = forwardRef<AppImageRefMethods, AppImageProps>(
 		const [imageInfo, setImageInfo] = useState<ImageInfo>({
 			width: 0,
 			height: 0,
+			name: '',
 		});
 		const [binarizeMode, setBinarizeMode] =
 			useStateWithCallback<boolean>(false);
@@ -112,11 +114,12 @@ const AppImage = forwardRef<AppImageRefMethods, AppImageProps>(
 
 		useEffect(() => {
 			imageRef.current!.onload = () => {
-				const image = imageRef.current;
+				const imageEl = imageRef.current;
 
 				setImageInfo({
-					width: image!.width,
-					height: image!.height,
+					width: imageEl!.width,
+					height: imageEl!.height,
+					name: image.name,
 				});
 
 				setIsLoadingImageInfo(false);
