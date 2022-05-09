@@ -4,6 +4,7 @@ import useAppContext from '../../contexts/AppContext/useAppContext';
 import { Box } from '@mui/system';
 import AppImage from '../../components/AppImage';
 import { Image } from '../../contexts/AppContext/AppContext';
+import ActionsPanel from '../../components/ActionsPanel';
 
 const ImagesPage: FC = (): ReactElement => {
 	const { images, setImages, imagesRefs } = useAppContext();
@@ -52,6 +53,8 @@ const ImagesPage: FC = (): ReactElement => {
 					/>
 				))}
 			</div>
+
+			{!!images.length && <ActionsPanel />}
 		</>
 	);
 };

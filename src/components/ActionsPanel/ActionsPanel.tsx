@@ -10,10 +10,10 @@ const ActionsPanel: FC = (): ReactElement => {
 	return (
 		<Paper
 			sx={{
-				padding: '20px',
 				display: 'flex',
 				alignItems: 'center',
 				justifyContent: 'center',
+				width: '100%',
 			}}
 			elevation={12}
 		>

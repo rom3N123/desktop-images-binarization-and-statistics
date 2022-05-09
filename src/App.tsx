@@ -1,6 +1,6 @@
 import { Paper } from '@mui/material';
 import { Route, Routes } from 'react-router-dom';
-import ActionsPanel from './components/ActionsPanel';
+import Navigation from './components/Navigation';
 import ImagesPage from './pages/ImagesPage';
 import MainPage from './pages/MainPage';
 
@@ -17,13 +17,13 @@ function App() {
 				justifyContent: 'space-between',
 			}}
 		>
+			<Navigation />
+
 			<Routes>
 				<Route index element={<MainPage />} />
 
 				<Route path='/images' element={<ImagesPage />} />
 			</Routes>
-
-			<ActionsPanel />
 		</Paper>
 	);
 }

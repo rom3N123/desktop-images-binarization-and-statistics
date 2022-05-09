@@ -1,5 +1,6 @@
 import { Box } from '@mui/material';
 import React, { FC, ReactElement } from 'react';
+import ActionsPanel from '../../components/ActionsPanel';
 import Dropzone from '../../components/Dropzone';
 
 const MainPage: FC = (): ReactElement => {
