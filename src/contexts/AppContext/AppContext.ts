@@ -1,4 +1,5 @@
-import { createContext } from 'react';
+import { createContext, MutableRefObject } from 'react';
+import { ArrayRef } from '../../hooks/useArrayRefs/useArrayRefs';
 
 export type Image = {
 	name: string;
@@ -10,13 +11,19 @@ export type AppContextValue = {
 	setImages: React.Dispatch<React.SetStateAction<Image[]>>;
 	isBinarizing: boolean;
 	setIsBinarizing: React.Dispatch<React.SetStateAction<boolean>>;
+	imagesRefs: MutableRefObject<ArrayRef>;
+	startBinarize: () => void;
 };
+
+const emptyFunc = () => {};
 
 export const initialValue: AppContextValue = {
 	images: [],
-	setImages: () => {},
+	setImages: emptyFunc,
 	isBinarizing: false,
-	setIsBinarizing: () => {},
+	setIsBinarizing: emptyFunc,
+	imagesRefs: { current: [] },
+	startBinarize: emptyFunc,
 };
 
 export const Context = createContext<AppContextValue>(initialValue);

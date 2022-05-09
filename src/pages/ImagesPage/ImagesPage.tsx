@@ -6,7 +6,7 @@ import AppImage from '../../components/AppImage';
 import { Image } from '../../contexts/AppContext/AppContext';
 
 const ImagesPage: FC = (): ReactElement => {
-	const { images, setImages } = useAppContext();
+	const { images, setImages, imagesRefs } = useAppContext();
 
 	if (!images.length) {
 		return (
@@ -43,8 +43,12 @@ const ImagesPage: FC = (): ReactElement => {
 					overflow: 'auto',
 				}}
 			>
-				{images.map(image => (
-					<AppImage image={image} onDelete={filterImage} />
+				{images.map((image, index) => (
+					<AppImage
+						ref={imagesRefs.current[index]}
+						image={image}
+						onDelete={filterImage}
+					/>
 				))}
 			</div>
 		</>

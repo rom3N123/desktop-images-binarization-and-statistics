@@ -3,7 +3,7 @@ import React, { FC, ReactElement } from 'react';
 import useAppContext from '../../contexts/AppContext/useAppContext';
 
 const ActionsPanel: FC = (): ReactElement => {
-	const { images } = useAppContext();
+	const { images, startBinarize, isBinarizing } = useAppContext();
 
 	const areImagesLoaded = Boolean(images.length);
 
@@ -17,7 +17,10 @@ const ActionsPanel: FC = (): ReactElement => {
 			}}
 			elevation={12}
 		>
-			<Button disabled={!areImagesLoaded}>
+			<Button
+				onClick={startBinarize}
+				disabled={!areImagesLoaded || isBinarizing}
+			>
 				{areImagesLoaded ? 'Анализировать' : 'Загрузите изображения'}
 			</Button>
 		</Paper>
