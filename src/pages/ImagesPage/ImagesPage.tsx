@@ -34,11 +34,20 @@ const ImagesPage: FC = (): ReactElement => {
 	};
 
 	return (
-		<ImageList rowHeight={300} cols={3}>
-			{images.map(image => (
-				<AppImage image={image} onDelete={filterImage} />
-			))}
-		</ImageList>
+		<>
+			<div
+				style={{
+					display: 'flex',
+					gap: '8px',
+					flexWrap: 'wrap',
+					overflow: 'auto',
+				}}
+			>
+				{images.map(image => (
+					<AppImage image={image} onDelete={filterImage} />
+				))}
+			</div>
+		</>
 	);
 };
 

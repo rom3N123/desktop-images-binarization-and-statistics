@@ -42,6 +42,7 @@ const AppImageInfo: FC<AppImageInfoProps> = ({
 	height,
 	name,
 	isLoadingInfo,
+	binarizedTime,
 }): ReactElement => {
 	if (isLoadingInfo) {
 		return <CircularProgress />;
@@ -52,7 +53,11 @@ const AppImageInfo: FC<AppImageInfoProps> = ({
 		{ name: 'Ширина', value: `${width}px` },
 		{ name: 'Высота', value: `${height}px` },
 		{ name: 'Кол-во пикселей', value: width * height },
-	];
+		typeof binarizedTime !== 'undefined' && {
+			name: 'Время бинаризации',
+			value: binarizedTime,
+		},
+	].filter(Boolean);
 
 	return (
 		<SBox>

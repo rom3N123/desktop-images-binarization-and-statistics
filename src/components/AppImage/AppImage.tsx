@@ -3,6 +3,7 @@ import { FC, ReactElement, useEffect, useRef, useState } from 'react';
 import AppImageDeleteButton from './components/AppImageDeleteButton';
 import AppImageInfo from './components/AppImageInfo';
 import { Image } from '../../contexts/AppContext/AppContext';
+import { Box } from '@mui/system';
 
 type AppImageProps = {
 	image: Image;
@@ -12,6 +13,7 @@ type AppImageProps = {
 export type ImageInfo = {
 	width: number;
 	height: number;
+	binarizedTime?: number;
 };
 
 const AppImage: FC<AppImageProps> = ({ image, onDelete }): ReactElement => {
@@ -21,6 +23,76 @@ const AppImage: FC<AppImageProps> = ({ image, onDelete }): ReactElement => {
 		width: 0,
 		height: 0,
 	});
+	const [isBinarizing, setIsBinarizing] = useState<boolean>(false);
+	const [isBinarized, setIsBinarized] = useState<boolean>(false);
+
+	const canvasRef = useRef<HTMLCanvasElement>(null);
+
+	useEffect(() => {
+		if (!isLoadingImageInfo) {
+			setIsBinarizing(true);
+
+			const timeStart = Date.now();
+
+			const canvas = canvasRef.current;
+			const c = canvas?.getContext('2d');
+			const image = imageRef.current;
+			const { width, height } = imageInfo;
+			c?.drawImage(image!, 0, 0);
+			const imageData = c!.getImageData(0, 0, width, height);
+
+			for (let y = 0; y < height; y++) {
+				// *4 for 4 ints per pixel.
+				// This is an input index.
+				let inpos = y * width * 4;
+				// This is an output index.
+				let outpos = inpos;
+				// The width of the image.
+				for (let x = 0; x < width; x++) {
+					// Get the pixel of the red channel.
+					let r = imageData.data[inpos++];
+					// Get the pixel of the green channel.
+					let g = imageData.data[inpos++];
+					// Get the pixel of the blue channel.
+					let b = imageData.data[inpos++];
+					// Get the pixel of the alpha channel.
+					let a = imageData.data[inpos++];
+					// Transform RGB color space to gray scale.
+					let gray = 0.299 * r + 0.587 * g + 0.114 * b;
+					// This is our threshold. You can change it.
+					if (gray > 120) {
+						// Set the pixel is white.
+						imageData.data[outpos++] = 255;
+						imageData.data[outpos++] = 255;
+						imageData.data[outpos++] = 255;
+						imageData.data[outpos++] = a;
+					} else {
+						// Set the pixel is black.
+						imageData.data[outpos++] = 0;
+						imageData.data[outpos++] = 0;
+						imageData.data[outpos++] = 0;
+						imageData.data[outpos++] = a;
+					}
+				} // The closing "The width of the image".
+
+				const timeEnd = Date.now();
+
+				const binarizedTime = timeEnd - timeStart;
+
+				const seconds = (binarizedTime % 60000) / 1000;
+
+				setImageInfo(prevInfo => ({
+					...prevInfo,
+					binarizedTime: seconds,
+				}));
+
+				c!.putImageData(imageData, 0, 0);
+
+				setIsBinarizing(false);
+				setIsBinarized(true);
+			}
+		}
+	}, [isLoadingImageInfo]);
 
 	useEffect(() => {
 		imageRef.current!.onload = () => {
@@ -36,20 +108,38 @@ const AppImage: FC<AppImageProps> = ({ image, onDelete }): ReactElement => {
 	}, []);
 
 	return (
-		<ImageListItem
-			sx={{ position: 'relative', overflow: 'hidden' }}
+		<Box
+			sx={{
+				position: 'relative',
+				overflow: 'hidden',
+				display: 'fllex',
+				justifyContent: 'center',
+			}}
 			key={image.src}
 		>
-			<img ref={imageRef} src={image.src} />
+			{!isBinarized && (
+				<>
+					<img style={{ width: '100%' }} ref={imageRef} src={image.src} />
 
-			<AppImageDeleteButton image={image} onDelete={onDelete} />
+					<AppImageDeleteButton image={image} onDelete={onDelete} />
+				</>
+			)}
 
 			<AppImageInfo
 				{...imageInfo}
 				isLoadingInfo={isLoadingImageInfo}
 				name={image.name}
 			/>
-		</ImageListItem>
+
+			{!isLoadingImageInfo && (
+				<canvas
+					ref={canvasRef}
+					width={imageInfo.width}
+					height={imageInfo.height}
+					style={{ height: '100%', width: '100%' }}
+				></canvas>
+			)}
+		</Box>
 	);
 };
 
