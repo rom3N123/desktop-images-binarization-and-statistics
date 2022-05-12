@@ -1,6 +1,7 @@
 import Paper from '@mui/material/Paper';
 import { Route, Routes } from 'react-router-dom';
 import Navigation from './components/Navigation';
+import ChartPage from './pages/ChartPage';
 import ImagesPage from './pages/ImagesPage';
 import MainPage from './pages/MainPage';
 import TablePage from './pages/TablePage';
@@ -26,6 +27,8 @@ function App() {
 				<Route path='/images' element={<ImagesPage />} />
 
 				<Route path='/table' element={<TablePage />} />
+
+				<Route path='/chart' element={<ChartPage />} />
 			</Routes>
 		</Paper>
 	);
