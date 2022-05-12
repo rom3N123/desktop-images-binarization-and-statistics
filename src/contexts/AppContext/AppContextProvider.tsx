@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, ReactNode, useState } from 'react';
+import React, { FC, ReactElement, ReactNode, useEffect, useState } from 'react';
 import { AppImageRefMethods } from '../../components/AppImage/AppImage';
 import useArrayRefs from '../../hooks/useArrayRefs';
 import appStore from '../../stores/appStore';
@@ -10,6 +10,19 @@ const AppContextProvider: FC<{ children: ReactNode }> = ({
 	const [images, setImages] = useState<Image[]>([]);
 	const [isBinarizing, setIsBinarizing] = useState<boolean>(false);
 	const imagesRefs = useArrayRefs<AppImageRefMethods>(images.length);
+	const [shouldSetImagesInfo, setShouldSetImagesInfo] =
+		useState<boolean>(false);
+
+	useEffect(() => {
+		if (shouldSetImagesInfo) {
+			console.log(imagesRefs.current);
+			const imagesInfos = imagesRefs.current.map(ref => ref.current!.imageInfo);
+
+			appStore.setImagesInfos(imagesInfos);
+
+			setShouldSetImagesInfo(false);
+		}
+	}, [shouldSetImagesInfo]);
 
 	const startBinarize = async () => {
 		setIsBinarizing(true);
@@ -21,9 +34,7 @@ const AppContextProvider: FC<{ children: ReactNode }> = ({
 		setIsBinarizing(false);
 
 		setTimeout(() => {
-			const imagesInfos = imagesRefs.current.map(ref => ref.current!.imageInfo);
-
-			appStore.setImagesInfos(imagesInfos);
+			setShouldSetImagesInfo(true);
 		}, 0);
 	};
 
